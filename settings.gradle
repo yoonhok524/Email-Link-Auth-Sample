@@ -17,3 +17,5 @@ dependencyResolutionManagement {
 rootProject.name = "Email Link Auth Sample"
 include ':app'
 include ':feature:signin'
+include ':feature:home'
+include ':core:data'

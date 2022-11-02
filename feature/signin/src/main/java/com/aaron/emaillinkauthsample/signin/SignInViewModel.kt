@@ -1,10 +1,12 @@
 package com.aaron.emaillinkauthsample.signin
 
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.aaron.emaillinkauthsample.data.repo.AuthRepository
 import com.google.firebase.auth.ktx.actionCodeSettings
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -12,7 +14,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class SignInViewModel @Inject constructor() : ViewModel() {
+class SignInViewModel @Inject constructor(
+    private val authRepo: AuthRepository
+) : ViewModel() {
 
     var uiState by mutableStateOf<SignInUiState>(SignInUiState.ReadyForSignIn)
         private set
@@ -34,10 +38,17 @@ class SignInViewModel @Inject constructor() : ViewModel() {
         Firebase.auth.sendSignInLinkToEmail(email, actionCodeSettings)
             .addOnCompleteListener { task ->
                 Log.d(TAG, "[sample] signIn.sendSignInLinkToEmail - success: ${task.isSuccessful}")
-                uiState = if (task.isSuccessful) SignInUiState.Success else SignInUiState.ReadyForSignIn
+                uiState = if (task.isSuccessful) {
+                    authRepo.saveEmail(email)
+                    SignInUiState.Success
+                } else {
+                    authRepo.saveEmail("")
+                    SignInUiState.ReadyForSignIn
+                }
             }
             .addOnFailureListener { t ->
                 Log.e(TAG, "[sample] signIn.sendSignInLinkToEmail - failed: ${t.message}", t)
+                authRepo.saveEmail("")
                 uiState = SignInUiState.ReadyForSignIn
             }
     }
