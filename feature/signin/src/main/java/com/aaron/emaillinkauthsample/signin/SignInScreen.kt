@@ -60,7 +60,7 @@ fun SignInScreen(
             verticalArrangement = Arrangement.Center
         ) {
             val enabled = uiState is SignInUiState.ReadyForSignIn
-            var email by remember { mutableStateOf("youknow.yoonho@gmail.com") }
+            var email by remember { mutableStateOf("") }
             OutlinedTextField(
                 value = email,
                 onValueChange = {
