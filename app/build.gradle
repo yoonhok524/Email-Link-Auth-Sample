@@ -67,12 +67,14 @@ dependencies {
     debugImplementation 'androidx.compose.ui:ui-test-manifest:1.2.1'
 
 
-    // Firebase
-    implementation platform('com.google.firebase:firebase-bom:31.0.2')
-
-
     // AAK
     implementation 'com.github.yoonhok524:AAK:1.0.11'
+
+
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:31.0.2')
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-dynamic-links-ktx'
 
 
     // Jetpack Hilt
