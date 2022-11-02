@@ -19,9 +19,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.aaron.emaillinkauthsample.signin.SignInViewModel
 
 @Composable
-fun SignInScreen() {
+fun SignInScreen(
+    vm: SignInViewModel
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -45,7 +48,7 @@ fun SignInScreen() {
 
         Button(
             onClick = {
-
+                vm.signIn(email)
             }
         ) {
             Text(text = "Sign In")
