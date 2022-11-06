@@ -63,7 +63,6 @@ class MainActivity : ComponentActivity() {
                 emailLinkResultFlow.collectLatest {
                     Log.d(TAG, "[sample] emailLinkResultFlow - emailLink: $it")
                     handleEmailLink(navController, it)
-
                 }
             }
 
