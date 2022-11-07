@@ -9,5 +9,11 @@ object SignIn : SampleDestination {
 }
 
 object Home : SampleDestination {
-    override val route = "home"
+    const val KEY_EMAIL_LINK = "emailLink"
+
+    override val route = "home?emailLink={${KEY_EMAIL_LINK}}"
+
+    fun getRoute(emailLink: String): String {
+        return "home?emailLink={$emailLink}"
+    }
 }

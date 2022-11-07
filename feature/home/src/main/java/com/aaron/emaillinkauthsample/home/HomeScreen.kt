@@ -15,7 +15,7 @@ import dev.aaron.aak.compose.VerticalSpacer
 @Composable
 fun HomeScreen(
     vm: HomeViewModel,
-    emailLink: String?,
+    emailLink: String? = null,
     onNavigateSignIn: () -> Unit
 ) {
     vm.signIn(emailLink)
