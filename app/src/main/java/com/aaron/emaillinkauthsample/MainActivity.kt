@@ -20,9 +20,13 @@ import com.google.firebase.dynamiclinks.PendingDynamicLinkData
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.withContext
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -61,8 +65,10 @@ class MainActivity : ComponentActivity() {
 
             lifecycleScope.launchWhenCreated {
                 emailLinkResultFlow.collectLatest {
-                    Log.d(TAG, "[sample] emailLinkResultFlow - emailLink: $it")
-                    handleEmailLink(navController, it)
+                    val encodedEmailLink = withContext(Dispatchers.IO) {
+                        URLEncoder.encode(it, StandardCharsets.UTF_8.toString())
+                    }
+                    navController.navigate(Home.getRoute(encodedEmailLink))
                 }
             }
 
@@ -80,13 +86,6 @@ class MainActivity : ComponentActivity() {
         ) {
             SampleNavHost(navController)
         }
-    }
-
-    private fun handleEmailLink(navController: NavHostController, emailLink: String) {
-        navController.currentBackStackEntry?.savedStateHandle?.apply {
-            set("emailLink", emailLink)
-        }
-        navController.navigate(Home.route)
     }
 
     companion object {
